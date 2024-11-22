@@ -6,17 +6,18 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useAppSelector, useAppDispatch } from "@/lib/store/hooks";
 import Section from "@/components/Section";
-import { setWorkExperience } from "@/lib/store/recume/resumeSlice";
+import { setCourses, setProjects } from "@/lib/store/recume/resumeSlice";
 import SectionHeadingAndTips from "@/components/SectionHeadingAndTips";
-import { FaBriefcase } from "react-icons/fa";
+import { FaAward, FaLaptopCode } from "react-icons/fa";
 
-interface WorkExperienceI {
-  id?: number;
-  jobTitle: string;
-  companyName: string;
-  jobStartAndEndDate: string;
-  jobDescription: string;
-}
+interface ProjectI {
+    id?: number;
+    projectTitle: string;
+    technologyUsed: string;
+    projectGithubLink: string;
+    projectLink: string;
+    projectDescription: string;
+  }
 
 function Page() {
   const {
@@ -34,17 +35,19 @@ function Page() {
   console.log(noOfSection);
   const submit = async (data: any) => {
     console.log("Form Data:", data);
+    alert("Submitted");
 
-    const workExperienceData:WorkExperienceI[] = noOfSection.map((n) => ({
+    const projectsData: ProjectI[] = noOfSection.map((n) => ({
       id: n,
-      jobTitle: data[`jobTitle${n}`],
-      companyName: data[`companyName${n}`],
-      jobStartAndEndDate: data[`jobStartAndEndDate${n}`],
-      jobDescription: data[`jobDescription${n}`],
+      projectTitle: data[`courseTitle${n}`],
+      technologyUsed: data[`courseInstitutionName${n}`],
+      projectGithubLink: data[`courseStartAndEndDate${n}`],
+      projectLink: data[`courseDescription${n}`],
+      projectDescription: data[`courseDescription4${n}`],
     }));
 
-    dispatch(setWorkExperience(workExperienceData));
-    router.push("/build-resume/skills");
+    dispatch(setProjects(projectsData));
+    router.push("/build-resume/");
   };
 
   return (
@@ -58,16 +61,16 @@ function Page() {
                 Keep the information relevant and concise
               </p> */}
               <SectionHeadingAndTips
-                id={2}
-                title="Work Experience"
-                description="Professional work history and accomplishments"
-                Icon={FaBriefcase}
+                id={7}
+                title="Projects"
+                description="Notable personal and professional projects"
+                Icon={FaLaptopCode}
                 tips={[
-                  'Use reverse chronological order',
-                  'Focus on achievements',
-                  'Include metrics when possible',
-                  'Use action verbs'
-                ]}
+                    'Highlight relevant projects',
+                    'Include technologies used',
+                    'Describe impact and results',
+                    'Add live project links'
+                  ]}
               />
             </div>
             <div className="flex flex-col gap-4">
@@ -76,24 +79,30 @@ function Page() {
                   <Section
                     register={register}
                     errors={errors}
-                    input1={[
-                      "Job Title",
-                      "",
-                      `jobTitle${n}`,
-                      true
+                    input1={["Project Title", "", `projectTitle${n}`, true]}
+                    input2={[
+                      "Technologies Used",
+                      "Keep separated by comma (,)",
+                      `technologyUsed${n}`,
+                      true,
                     ]}
-                    input2={["Company Name", "", `companyName${n}`,true]}
                     input3={[
-                      "Start & End Date",
-                      "e.g. May 2020 - Jan 2024",
-                      `jobStartAndEndDate${n}`,
-                      true
+                      "Github Link (Optional)",
+                      "",
+                      `projectGithubLink${n}`,
+                      false,
+                    ]}
+                    input4={[
+                      "Project Link (Optional)",
+                      "",
+                      `projectLink${n}`,
+                      false,
                     ]}
                     textarea1={[
                       "Description",
-                      "Any honors or award recieved",
-                      `jobDescription${n}`,
-                      true
+                      "",
+                      `projectDescription${n}`,
+                      true,
                     ]}
                     setRemoveSection={() =>
                       setNoOfSection((prev) =>
@@ -121,7 +130,7 @@ function Page() {
                 size="xl"
                 variant={"cadetblue"}
               >
-                Next: Skills
+                Get Resume
               </Button>
             </div>
           </form>

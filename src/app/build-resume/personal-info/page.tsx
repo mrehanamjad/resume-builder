@@ -7,7 +7,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/lib/store/hooks";
-import { setPersonalInfo, setResumeData } from "@/lib/store/recume/resumeSlice";
+import { setPersonalInfo } from "@/lib/store/recume/resumeSlice";
 import SectionHeadingAndTips from "@/components/SectionHeadingAndTips";
 import { FaUser } from "react-icons/fa";
 
@@ -39,19 +39,15 @@ function Page() {
     console.log("Form Data:", data);
     // dispatch(setPersonalInfo(data))
     dispatch(setPersonalInfo(data));
-    router.push("/build-resume/education");
+    router.push("/build-resume/professional-summary");
   };
 
   return (
-    <div className="flex min-h-screen justify-center items-center bg-red-300">
+    <div className="flex min-h-screen justify-center items-center bg-gray-50">
       <Container>
         <div className="p-12 max-w-5xl w-full mx-auto bg-white">
           <form onSubmit={handleSubmit(submit)} className="flex flex-col">
             <div className="mb-10">
-              {/* <h1 className="text-4xl font-bold">Personal Details:</h1>
-              <p className="text-gray-600">
-                Keep the information relevant and concise
-              </p> */}
               <SectionHeadingAndTips
                 id={1}
                 title="Personal Details"
@@ -65,10 +61,10 @@ function Page() {
                 ]}
               />
             </div>
-            <div className="flex gap-6 w-full">
+            <div className="flex gap-10 max-lg:flex-col w-full">
               <div>
                 <label htmlFor="profileImage" className="cursor-pointer">
-                  <div className="h-32 w-32 bg-red-900 hover:border-sky-700 border">
+                  <div className="h-32 w-32 bg-[cadetblue] hover:border-[cadetblue] border">
                     <Image
                       src={img || "/image.png"}
                       alt="profile-pic"
@@ -76,7 +72,7 @@ function Page() {
                       width={1000}
                       className="w-full"
                     />
-                    <p className="mx-auto text-sky-700 mt-2 text-center">
+                    <p className="mx-auto text-[cadetblue] mt-2 text-center">
                       Choose Image
                     </p>
                   </div>
@@ -95,7 +91,7 @@ function Page() {
                   <p className="text-red-600 mt-12">{errors.image.message as string}</p>
                 )}
               </div>
-              <div id="section1" className="grid grid-cols-2 flex-1 gap-4">
+              <div id="section1" className="grid grid-cols-1 md:grid-cols-2  flex-1 gap-4">
                 <div>
                   <Input
                     label="First Name:"
@@ -208,10 +204,10 @@ function Page() {
               <Button
                 type="submit" // Ensure the button is of type "submit" to trigger form submission
                 className="self-end w-fit"
-                size="lg"
+                size="xl"
                 variant={'cadetblue'}
               >
-                Next
+                Next: Professional Summary
               </Button>
             </div>
           </form>

@@ -3,6 +3,8 @@ import conf from "../cof/conf"
 import React from 'react';
 import { ArrowRight, FileText, Zap, Shield, Star, CheckCircle, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import Link from "next/link";
+import Header from "@/components/Header";
 // import { Card, CardContent } from '@/components/ui/card';
 
 
@@ -144,6 +146,7 @@ export default function Home() {
     // </div>
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       {/* Navbar */}
+      <Header />
 
       {/* Hero Section */}
       <div className="relative pt-16 pb-32 overflow-hidden">
@@ -157,10 +160,11 @@ export default function Home() {
               Build your job-winning resume with our AI-powered builder. Professional templates, expert suggestions, and ATS-friendly formats to help you land your dream job.
             </p>
             <div className="mt-8 flex justify-center gap-4">
+              <Link href={'/build-resume/personal-info'}>
               <Button size="lg" variant={'cadetblue'} className="px-8 py-3">
                 Build My Resume
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
+              </Button></Link>
               <Button size="lg" variant="outline" className="px-8 py-3">
                 View Templates
               </Button>

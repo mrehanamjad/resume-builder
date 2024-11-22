@@ -11,6 +11,7 @@ import SectionHeadingAndTips from "@/components/SectionHeadingAndTips";
 import { FaGraduationCap } from "react-icons/fa";
 
 interface EducationI {
+  id?: number;
   qualification: string;
   institutionName: string;
   educationStartAndEndDate: string;
@@ -34,7 +35,8 @@ function Page() {
   const submit = async (data: any) => {
     console.log("Form Data:", data);
 
-    const educationData:EducationI[] = noOfSection.map((n) => ({
+    const educationData: EducationI[] = noOfSection.map((n) => ({
+      id: n,
       qualification: data[`qualification${n}`],
       institutionName: data[`institutionName${n}`],
       educationStartAndEndDate: data[`educationStartAndEndDate${n}`],
@@ -48,7 +50,7 @@ function Page() {
   return (
     <div className="flex min-h-screen justify-center items-center bg--300">
       <Container>
-        <div className="p-12 max-w-5xl w-full mx-auto bg-white ">
+        <div className="p-4 sm:p-6 md:9 lg:p-12 max-w-5xl w-full mx-auto bg-white ">
           <form onSubmit={handleSubmit(submit)} className="flex flex-col">
             <div className="mb-10">
               {/* <h1 className="text-4xl font-bold text-[cadetblue]">Education:</h1>
@@ -78,17 +80,25 @@ function Page() {
                       "Degree or Qualification",
                       "",
                       `qualification${n}`,
+                      true,
                     ]}
-                    input2={["Institution Name", "", `institutionName${n}`]}
+                    input2={[
+                      "Institution Name",
+                      "",
+                      `institutionName${n}`,
+                      true,
+                    ]}
                     input3={[
                       "Start & End Date",
                       "e.g. May 2020 - Jan 2024",
                       `educationStartAndEndDate${n}`,
+                      true,
                     ]}
                     textarea1={[
                       "Description",
                       "Any honors or award recieved",
                       `educationDescription${n}`,
+                      true,
                     ]}
                     setRemoveSection={() =>
                       setNoOfSection((prev) =>
@@ -101,7 +111,7 @@ function Page() {
               <Button
                 type="button"
                 variant={"ghost"}
-                className="w-fit text-lg font-medium hover:text-[#5ab0b3] mt-6 text-[#5ab0b3] "
+                className="w-full sm:w-fit text-lg max-sm:self-center font-medium hover:text-[#5ab0b3] mt-6 text-[#5ab0b3] "
                 onClick={() => {
                   setNoOfSection((prev) => [...prev, Date.now()]);
                 }}
@@ -109,14 +119,14 @@ function Page() {
                 + Add Education
               </Button>
             </div>
-            <div className="w-full flex flex-row-reverse mt-4">
+            <div className="w-full flex max-sm:justify-center  flex-row-reverse mt-6 sm:mt-4 ">
               <Button
                 type="submit" // Ensure the button is of type "submit" to trigger form submission
-                className="self-end w-fit"
-                size="lg"
+                className="self-end w-full sm:w-fit"
+                size="xl"
                 variant={"cadetblue"}
               >
-                Next
+                Next: Work Experience
               </Button>
             </div>
           </form>

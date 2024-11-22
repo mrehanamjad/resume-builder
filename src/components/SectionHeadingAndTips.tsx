@@ -27,7 +27,7 @@ function SectionHeadingAndTips({
             </h3>
           </div>
           <p className="text-gray-600 text-sm mb-3">{description}</p>
-          <div className="bg-gray-50 rounded-lg p-3">
+          <div className="bg-[cadetblue]/5 rounded-lg p-3">
             <h4 className="text-sm font-medium text-gray-700 mb-2">Tips:</h4>
             <ul className="list-disc ml-4 space-y-1">
               {tips.map((tip: string, index: number) => (

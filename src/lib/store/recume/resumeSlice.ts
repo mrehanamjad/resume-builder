@@ -15,6 +15,7 @@ interface PersonalInfoI {
 }
 
 interface EducationI {
+  id?: number;
   qualification: string;
   institutionName: string;
   educationStartAndEndDate: string;
@@ -22,6 +23,7 @@ interface EducationI {
 }
 
 interface WorkExperienceI {
+  id?: number;
   jobTitle: string;
   companyName: string;
   jobStartAndEndDate: string;
@@ -29,11 +31,13 @@ interface WorkExperienceI {
 }
 
 interface SkillI {
+  id?: number;
   skillName: string;
-  skillDescription: string;
+  skillLevel: string;
 }
 
 interface CourseI {
+  id?: number;
   courseTitle: string;
   courseInstitutionName: string;
   courseStartAndEndDate: string;
@@ -41,12 +45,14 @@ interface CourseI {
 }
 
 interface ProjectI {
+  id?: number;
   projectTitle: string;
   technologyUsed: string;
   projectGithubLink: string;
-  projectWebsiteLink: string;
+  projectLink: string;
   projectDescription: string;
 }
+
 
 interface ResumeDataI {
   personalInfo: PersonalInfoI;
@@ -123,6 +129,18 @@ const resumeSlice = createSlice({
       state.resumeData.education[action.payload.index] =
         action.payload.education;
     },
+    setWorkExperience: (state, action: PayloadAction<WorkExperienceI[]>) => {
+      state.resumeData.workExperience = action.payload;
+    },
+    setCourses: (state, action: PayloadAction<CourseI[]>) => {
+      state.resumeData.courses = action.payload;
+    },
+    setProjects: (state, action: PayloadAction<ProjectI[]>) => {
+      state.resumeData.projects = action.payload;
+    },
+    setSkills: (state, action: PayloadAction<SkillI[]>) => {
+        state.resumeData.skill = action.payload;
+    }
   },
 });
 
@@ -136,6 +154,10 @@ export const {
   addEducation,
   removeEducation,
   editEducation,
+  setWorkExperience,
+  setCourses,
+  setProjects,
+  setSkills,
 } = resumeSlice.actions;
 
 export default resumeSlice.reducer;

@@ -6,16 +6,16 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useAppSelector, useAppDispatch } from "@/lib/store/hooks";
 import Section from "@/components/Section";
-import { setWorkExperience } from "@/lib/store/recume/resumeSlice";
+import { setCourses } from "@/lib/store/recume/resumeSlice";
 import SectionHeadingAndTips from "@/components/SectionHeadingAndTips";
-import { FaBriefcase } from "react-icons/fa";
+import { FaAward } from "react-icons/fa";
 
-interface WorkExperienceI {
+interface CourseI {
   id?: number;
-  jobTitle: string;
-  companyName: string;
-  jobStartAndEndDate: string;
-  jobDescription: string;
+  courseTitle: string;
+  courseInstitutionName: string;
+  courseStartAndEndDate: string;
+  courseDescription: string;
 }
 
 function Page() {
@@ -34,17 +34,18 @@ function Page() {
   console.log(noOfSection);
   const submit = async (data: any) => {
     console.log("Form Data:", data);
+    alert("Submitted");
 
-    const workExperienceData:WorkExperienceI[] = noOfSection.map((n) => ({
+    const coursesData: CourseI[] = noOfSection.map((n) => ({
       id: n,
-      jobTitle: data[`jobTitle${n}`],
-      companyName: data[`companyName${n}`],
-      jobStartAndEndDate: data[`jobStartAndEndDate${n}`],
-      jobDescription: data[`jobDescription${n}`],
+      courseTitle: data[`courseTitle${n}`],
+      courseInstitutionName: data[`courseInstitutionName${n}`],
+      courseStartAndEndDate: data[`courseStartAndEndDate${n}`],
+      courseDescription: data[`courseDescription${n}`],
     }));
 
-    dispatch(setWorkExperience(workExperienceData));
-    router.push("/build-resume/skills");
+    dispatch(setCourses(coursesData));
+    router.push("/build-resume/projects");
   };
 
   return (
@@ -58,15 +59,15 @@ function Page() {
                 Keep the information relevant and concise
               </p> */}
               <SectionHeadingAndTips
-                id={2}
-                title="Work Experience"
-                description="Professional work history and accomplishments"
-                Icon={FaBriefcase}
+                id={6}
+                title="Courses & Certifications"
+                description="Additional qualifications and training"
+                Icon={FaAward}
                 tips={[
-                  'Use reverse chronological order',
-                  'Focus on achievements',
-                  'Include metrics when possible',
-                  'Use action verbs'
+                  "Include relevant certifications",
+                  "Add completion dates",
+                  "List recognized certifications first",
+                  "Show active credentials",
                 ]}
               />
             </div>
@@ -76,24 +77,24 @@ function Page() {
                   <Section
                     register={register}
                     errors={errors}
-                    input1={[
-                      "Job Title",
+                    input1={["Course", "", `courseTitle${n}`, true]}
+                    input2={[
+                      "Institute/Plateform ",
                       "",
-                      `jobTitle${n}`,
-                      true
+                      `courseInstitutionName${n}`,
+                      true,
                     ]}
-                    input2={["Company Name", "", `companyName${n}`,true]}
                     input3={[
                       "Start & End Date",
                       "e.g. May 2020 - Jan 2024",
-                      `jobStartAndEndDate${n}`,
-                      true
+                      `courseStartAndEndDate${n}`,
+                      true,
                     ]}
                     textarea1={[
-                      "Description",
-                      "Any honors or award recieved",
-                      `jobDescription${n}`,
-                      true
+                      "Description (optional)",
+                      "A brief description of the course or certification",
+                      `courseDescription${n}`,
+                      false,
                     ]}
                     setRemoveSection={() =>
                       setNoOfSection((prev) =>
@@ -121,7 +122,7 @@ function Page() {
                 size="xl"
                 variant={"cadetblue"}
               >
-                Next: Skills
+                Next: Projects
               </Button>
             </div>
           </form>
