@@ -10,11 +10,13 @@ import { useAppDispatch } from "@/lib/store/hooks";
 import { setPersonalInfo } from "@/lib/store/recume/resumeSlice";
 import SectionHeadingAndTips from "@/components/SectionHeadingAndTips";
 import { FaUser } from "react-icons/fa";
+import BtnLoader from "@/components/BtnLoader";
 
 function Page() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -23,13 +25,20 @@ function Page() {
   const dispatch = useAppDispatch();
 
   const [img, setImg] = useState<string>("/image.png");
+  const [loading,SetLoading] = useState<boolean>(false);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        setImg(reader.result as string);
+        const imgStr = reader.result as string
+        setImg(imgStr);
+        console.log(imgStr)
+       
+        setValue("image", imgStr, {
+          shouldValidate: true,
+        });
       };
       reader.readAsDataURL(file);
     }
@@ -37,15 +46,15 @@ function Page() {
 
   const submit = async (data: any) => {
     console.log("Form Data:", data);
-    // dispatch(setPersonalInfo(data))
     dispatch(setPersonalInfo(data));
     router.push("/build-resume/professional-summary");
+    SetLoading(true)
   };
 
   return (
-    <div className="flex min-h-screen justify-center items-center bg-gray-50">
+    <div className="flex min-h-screen justify-center items-center bg-[cadetblue]/10 py-2 md:py-6">
       <Container>
-        <div className="p-12 max-w-5xl w-full mx-auto bg-white">
+        <div className="p-12 max-w-5xl w-full mx-auto rounded-lg bg-white">
           <form onSubmit={handleSubmit(submit)} className="flex flex-col">
             <div className="mb-10">
               <SectionHeadingAndTips
@@ -82,9 +91,9 @@ function Page() {
                   className="hidden"
                   id="profileImage"
                   accept="image/png, image/jpg, image/jpeg, image/gif"
-                  {...register("image", {
-                    required: "Image is required",
-                  })}
+                  // {...register("image", {
+                  //   required: "Image is required",
+                  // })}
                   onChange={handleImageChange}
                 />
                 {errors.image && (
@@ -207,7 +216,7 @@ function Page() {
                 size="xl"
                 variant={'cadetblue'}
               >
-                Next: Professional Summary
+                Next: Professional Summary {loading && <BtnLoader /> }
               </Button>
             </div>
           </form>

@@ -9,6 +9,7 @@ import { setSkills } from "@/lib/store/recume/resumeSlice";
 import SectionHeadingAndTips from "@/components/SectionHeadingAndTips";
 import { FaLightbulb } from "react-icons/fa";
 import SkillCard from "@/components/SkillCard";
+import BtnLoader from "@/components/BtnLoader";
 
 interface SkillI {
   id?: number;
@@ -28,6 +29,7 @@ function Page() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [noOfSection, setNoOfSection] = useState([0]);
+  const [loading,SetLoading] = useState<boolean>(false);
 
   console.log(noOfSection);
   const submit = async (data: any) => {
@@ -41,12 +43,13 @@ function Page() {
 
     dispatch(setSkills(skillData));
     router.push("/build-resume/courses");
+    SetLoading(true)
   };
 
   return (
-    <div className="flex min-h-screen justify-center items-center bg--300">
+    <div className="flex min-h-screen justify-center items-center bg-[cadetblue]/10 py-2 md:py-6">
       <Container>
-        <div className="p-4  sm:p-6 md:p-9 lg:p-12 max-w-5xl w-full mx-auto bg-white ">
+        <div className="p-4  sm:p-6 md:p-9 lg:p-12 max-w-5xl w-full mx-auto rounded-lg bg-white ">
           <form onSubmit={handleSubmit(submit)} className="flex flex-col">
             <div className="mb-10">
               <SectionHeadingAndTips
@@ -96,7 +99,7 @@ function Page() {
                 size="xl"
                 variant={"cadetblue"}
               >
-                Next: Courses & Certifications
+                Next: Courses & Certifications {loading && <BtnLoader /> }
               </Button>
             </div>
           </form>

@@ -9,6 +9,8 @@ import Section from "@/components/Section";
 import { setEducation } from "@/lib/store/recume/resumeSlice";
 import SectionHeadingAndTips from "@/components/SectionHeadingAndTips";
 import { FaGraduationCap } from "react-icons/fa";
+import BtnLoader from "@/components/BtnLoader";
+import DontIncludeCheck from "@/components/DontIncludeCheck";
 
 interface EducationI {
   id?: number;
@@ -23,34 +25,40 @@ function Page() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({});
 
   const resume = useAppSelector((state: any) => state.resume);
   console.log(resume);
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [noOfSection, setNoOfSection] = useState([0]);
+  const [loading, SetLoading] = useState<boolean>(false);
 
   console.log(noOfSection);
   const submit = async (data: any) => {
-    console.log("Form Data:", data);
-
-    const educationData: EducationI[] = noOfSection.map((n) => ({
-      id: n,
-      qualification: data[`qualification${n}`],
-      institutionName: data[`institutionName${n}`],
-      educationStartAndEndDate: data[`educationStartAndEndDate${n}`],
-      educationDescription: data[`educationDescription${n}`],
-    }));
-
-    dispatch(setEducation(educationData));
+      const educationData: EducationI[] = noOfSection.map((n) => ({
+        id: n,
+        qualification: data[`qualification${n}`],
+        institutionName: data[`institutionName${n}`],
+        educationStartAndEndDate: data[`educationStartAndEndDate${n}`],
+        educationDescription: data[`educationDescription${n}`],
+      }));
+      dispatch(setEducation(educationData));
+   
     router.push("/build-resume/work");
+    SetLoading(true);
   };
 
+  const submitEmpty = () => {
+    dispatch(setEducation([]));
+    router.push("/build-resume/work");
+    SetLoading(true);
+  }
+
   return (
-    <div className="flex min-h-screen justify-center items-center bg--300">
+    <div className="flex min-h-screen justify-center items-center bg-[cadetblue]/10 py-2 md:py-6">
       <Container>
-        <div className="p-4 sm:p-6 md:9 lg:p-12 max-w-5xl w-full mx-auto bg-white ">
+        <div className="p-4 sm:p-6 md:9 lg:p-12 max-w-5xl w-full rounded-lg mx-auto bg-white ">
           <form onSubmit={handleSubmit(submit)} className="flex flex-col">
             <div className="mb-10">
               {/* <h1 className="text-4xl font-bold text-[cadetblue]">Education:</h1>
@@ -120,13 +128,20 @@ function Page() {
               </Button>
             </div>
             <div className="w-full flex max-sm:justify-center  flex-row-reverse mt-6 sm:mt-4 ">
+              <DontIncludeCheck
+                checkFunc={() => {
+                  setNoOfSection([]);
+                  submitEmpty()
+                }}
+                unCheckFunc={() => setNoOfSection([0])}
+              />
               <Button
                 type="submit" // Ensure the button is of type "submit" to trigger form submission
                 className="self-end w-full sm:w-fit"
                 size="xl"
                 variant={"cadetblue"}
               >
-                Next: Work Experience
+                Next: Work Experience {loading && <BtnLoader />}
               </Button>
             </div>
           </form>

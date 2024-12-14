@@ -9,6 +9,8 @@ import Section from "@/components/Section";
 import { setWorkExperience } from "@/lib/store/recume/resumeSlice";
 import SectionHeadingAndTips from "@/components/SectionHeadingAndTips";
 import { FaBriefcase } from "react-icons/fa";
+import BtnLoader from "@/components/BtnLoader";
+import DontIncludeCheck from "@/components/DontIncludeCheck";
 
 interface WorkExperienceI {
   id?: number;
@@ -30,11 +32,10 @@ function Page() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [noOfSection, setNoOfSection] = useState([0]);
+  const [loading,SetLoading] = useState<boolean>(false);
 
   console.log(noOfSection);
   const submit = async (data: any) => {
-    console.log("Form Data:", data);
-
     const workExperienceData:WorkExperienceI[] = noOfSection.map((n) => ({
       id: n,
       jobTitle: data[`jobTitle${n}`],
@@ -42,15 +43,22 @@ function Page() {
       jobStartAndEndDate: data[`jobStartAndEndDate${n}`],
       jobDescription: data[`jobDescription${n}`],
     }));
-
     dispatch(setWorkExperience(workExperienceData));
+
     router.push("/build-resume/skills");
+    SetLoading(true)
   };
 
+  const submitEmpty = () => {
+    dispatch(setWorkExperience([]));
+    router.push("/build-resume/skills");
+    SetLoading(true);
+  }
+
   return (
-    <div className="flex min-h-screen justify-center items-center bg--300">
+    <div className="flex min-h-screen justify-center items-center bg-[cadetblue]/10 py-2 md:py-6">
       <Container>
-        <div className="p-4 sm:p-6 md:9 lg:p-12 max-w-5xl w-full mx-auto bg-white ">
+        <div className="p-4 sm:p-6 md:9 lg:p-12 max-w-5xl w-full mx-auto rounded-lg bg-white ">
           <form onSubmit={handleSubmit(submit)} className="flex flex-col">
             <div className="mb-10">
               {/* <h1 className="text-4xl font-bold text-[cadetblue]">Education:</h1>
@@ -115,13 +123,20 @@ function Page() {
               </Button>
             </div>
             <div className="w-full flex max-sm:justify-center  flex-row-reverse mt-6 sm:mt-4 ">
+            <DontIncludeCheck
+                checkFunc={() => {
+                  setNoOfSection([]);
+                  submitEmpty();
+                }}
+                unCheckFunc={() => setNoOfSection([0])}
+              />
               <Button
                 type="submit" // Ensure the button is of type "submit" to trigger form submission
                 className="self-end w-full sm:w-fit"
                 size="xl"
                 variant={"cadetblue"}
               >
-                Next: Skills
+                Next: Skills {loading && <BtnLoader /> }
               </Button>
             </div>
           </form>

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Container from "@/components/Container";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import {
 import SectionHeadingAndTips from "@/components/SectionHeadingAndTips";
 import {  FaFileAlt } from "react-icons/fa";
 import { Textarea } from "@/components/ui/textarea";
+import BtnLoader from "@/components/BtnLoader";
 
 function Page() {
   const {
@@ -23,6 +24,7 @@ function Page() {
   console.log(resume);
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const [loading,SetLoading] = useState<boolean>(false);
 
   const submit = async (data: any) => {
     console.log("Form Data:", data);
@@ -31,12 +33,13 @@ function Page() {
 
     dispatch(setAboutMe(aboutMeData));
     router.push("/build-resume/education");
+    SetLoading(true)
   };
 
   return (
-    <div className="flex min-h-screen justify-center items-center bg--300">
+    <div className="flex min-h-screen justify-center items-center bg-[cadetblue]/10 py-2 md:py-6">
       <Container>
-        <div className="p-4 sm:p-6 md:9 lg:p-12 max-w-5xl w-full mx-auto bg-white ">
+        <div className="p-4 sm:p-6 md:9 lg:p-12 max-w-5xl w-full mx-auto rounded-lg bg-white ">
           <form onSubmit={handleSubmit(submit)} className="flex flex-col">
             <div className="mb-10">
               <SectionHeadingAndTips
@@ -73,7 +76,7 @@ function Page() {
                 size="xl"
                 variant={"cadetblue"}
               >
-                Next: Education
+                Next: Education {loading && <BtnLoader /> }
               </Button>
             </div>
           </form>

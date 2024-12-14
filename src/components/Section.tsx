@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import ConfirmDelete from "./ConfirmDelete";
+import { MdDelete } from "react-icons/md";
 
 function Section({
   register,
@@ -40,7 +41,18 @@ function Section({
         <span>{text || "(not specified)"}</span>
         <div className="flex gap-5 text-[1.75rem] font-bold items-center justify-center">
           {/* <MdDelete className="cursor-pointer text-red-500" onClick={setRemoveSection} /> */}
-          <ConfirmDelete deleteItem={setRemoveSection} />
+          <ConfirmDelete
+          toConfirm={
+            <MdDelete
+          className="cursor-pointer text-red-500 text-2xl"
+          onClick={(e) => e.stopPropagation()}
+        />
+          }
+            dialogTitle="Confirm Deletion"
+            dialogDescription="Are you sure you want to delete this item? This action cannot be undone."
+            dialogAction="Delete"
+            actionFunc={setRemoveSection}
+          />
           {isOpen ? (
             <FaChevronUp className="cursor-pointer" />
           ) : (
@@ -121,7 +133,7 @@ function Section({
         )}
         <div className={input4 ? "md:col-span-2" : "md:col-span-3"}>
           <Textarea
-          maxLength={160}
+            maxLength={160}
             label={textarea1[0]}
             placeholder={textarea1[1]}
             {...register(textarea1[2], {
@@ -129,10 +141,9 @@ function Section({
               maxLength: {
                 value: 160,
                 message: "Textarea cannot exceed 30 characters",
-              }
+              },
             })}
           />
-
         </div>
         {errors[textarea1[2]] && (
           <p className="text-red-600">

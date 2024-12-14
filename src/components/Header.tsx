@@ -1,6 +1,7 @@
 import React from 'react'
 import Container from './Container'
 import { Button } from './ui/button'
+import Link from 'next/link'
 
 function Header() {
   return (
@@ -11,11 +12,9 @@ function Header() {
               <span className="text-2xl font-bold text-blue-600">ResumePro</span>
             </div>
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#features" className="text-gray-600 hover:text-blue-600">Features</a>
-              <a href="#testimonials" className="text-gray-600 hover:text-blue-600">Testimonials</a>
-              <a href="#pricing" className="text-gray-600 hover:text-blue-600">Pricing</a>
-              <Button variant="outline" className="ml-4">Log in</Button>
-              <Button>Get Started</Button>
+              <Link href={'/'}>Home</Link>
+              <Button variant="ghost" className="ml-4">Log in</Button>
+              <Link href={'/build-resume/personal-info'}> <Button variant={'cadetblue'} >Get Started</Button></Link>
             </div>
           </div>
         </div>
