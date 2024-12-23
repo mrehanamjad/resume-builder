@@ -16,7 +16,7 @@ export class AuthService {
     this.account = new Account(this.client);
   }
 
-  async createAcount({
+  async createAccount({
     email,
     password,
     name,
@@ -32,13 +32,8 @@ export class AuthService {
         email,
         password,
         name
-      );
-      if (userAccount) {
-        //call another method
-        this.login({ email, password });
-      } else {
+      ); 
         return userAccount;
-      }
     } catch (error) {
       throw error;
     }

@@ -12,6 +12,7 @@ import { FaAward, FaLaptopCode } from "react-icons/fa";
 import BtnLoader from "@/components/BtnLoader";
 import { Checkbox } from "@/components/ui/checkbox";
 import DontIncludeCheck from "@/components/DontIncludeCheck";
+import { ArrowRight } from "lucide-react";
 
 interface ProjectI {
   id?: number;
@@ -140,7 +141,7 @@ function Page() {
                 size="xl"
                 variant={"cadetblue"}
               >
-                Get Resume {loading && <BtnLoader />}
+                Get Resume {loading ? <BtnLoader /> : <ArrowRight className="w-5 h-5" /> }
               </Button>
             </div>
           </form>

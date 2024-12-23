@@ -11,6 +11,7 @@ import { setPersonalInfo } from "@/lib/store/recume/resumeSlice";
 import SectionHeadingAndTips from "@/components/SectionHeadingAndTips";
 import { FaUser } from "react-icons/fa";
 import BtnLoader from "@/components/BtnLoader";
+import { ArrowRight } from "lucide-react";
 
 function Page() {
   const {
@@ -216,7 +217,7 @@ function Page() {
                 size="xl"
                 variant={'cadetblue'}
               >
-                Next: Professional Summary {loading && <BtnLoader /> }
+                Next: Professional Summary  {loading ? <BtnLoader /> : <ArrowRight className="w-5 h-5" /> }
               </Button>
             </div>
           </form>

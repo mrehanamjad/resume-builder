@@ -1,28 +1,53 @@
-'use client'
-import React from 'react';
-import { Lock, Mail } from 'lucide-react';
+"use client";
+import React, { useState } from "react";
+import { Lock, Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { login as storeLogin } from "@/lib/store/auth/authSlice";
+import authService from "@/appwrite/auth";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const {
     register,
     handleSubmit,
-    formState: { errors,isSubmitting },
+    formState: { errors, isSubmitting },
   } = useForm();
 
-  const onSubmit = async (data:any) => {
-    // Handle login logic here
-    console.log(data);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const [error, setError] = useState("");
+
+  const onSubmit = async (data: any) => {
+    setError("");
+    try {
+      const session = await authService.login(data);
+      if (session) {
+        const userData = await authService.getCurrentUser();
+        if (userData) dispatch(storeLogin({ userData }));
+        router.push("/my-resumes");
+      }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred.");
+      }
+    }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      {error && <p className="text-red-500 ">{error}</p>}
       {/* Email Input */}
       <div className="space-y-2">
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium text-gray-700"
+        >
           Email address
         </label>
         <div className="relative">
@@ -34,22 +59,29 @@ export default function LoginPage() {
               required: "Email is required",
               pattern: {
                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: "Invalid email address"
-              }
+                message: "Invalid email address",
+              },
             })}
             type="email"
-            className={`pl-10 ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+            className={`pl-10 ${
+              errors.email ? "border-red-500" : "border-gray-300"
+            }`}
             placeholder="Enter your email"
           />
         </div>
         {errors.email && (
-          <p className="mt-1 text-sm text-red-600">{errors.email.message as any}</p>
+          <p className="mt-1 text-sm text-red-600">
+            {errors.email.message as any}
+          </p>
         )}
       </div>
 
       {/* Password Input */}
       <div className="space-y-2">
-        <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+        <label
+          htmlFor="password"
+          className="block text-sm font-medium text-gray-700"
+        >
           Password
         </label>
         <div className="relative">
@@ -61,20 +93,24 @@ export default function LoginPage() {
               required: "Password is required",
               minLength: {
                 value: 6,
-                message: "Password must be at least 6 characters"
-              }
+                message: "Password must be at least 6 characters",
+              },
             })}
             type="password"
-            className={ ` pl-10 ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
+            className={` pl-10 ${
+              errors.password ? "border-red-500" : "border-gray-300"
+            }`}
             placeholder="Enter your password"
           />
         </div>
         {errors.password && (
-          <p className="mt-1 text-sm text-red-600">{errors.password.message as any}</p>
+          <p className="mt-1 text-sm text-red-600">
+            {errors.password.message as any}
+          </p>
         )}
       </div>
 
-        {/* TODO: add feature soon  */}
+      {/* TODO: add feature soon  */}
       {/* Remember Me and Forgot Password */}
       {/* <div className="flex items-center justify-between">
         <div className="flex items-center">
@@ -97,13 +133,13 @@ export default function LoginPage() {
       <Button
         type="submit"
         disabled={isSubmitting}
-        variant={'cadetblue'}
+        variant={"cadetblue"}
         className="bg-[#58a0a1] w-full py-6 text-lg"
       >
-        {isSubmitting ? 'Signing in...' : 'Sign in'}
+        {isSubmitting ? "Signing in..." : "Sign in"}
       </Button>
 
-        {/* TODO: add feature soon  */}
+      {/* TODO: add feature soon  */}
       {/* Social Login Options */}
       {/* <div className="mt-6">
         <div className="relative">
@@ -136,7 +172,15 @@ export default function LoginPage() {
           </button>
         </div>
       </div> */}
-          <p className='text-center text-gray-600'>Don't have an account? <Link href={'/signup'} className='underline text-[cadetblue] font-medium hover:underline-offset-2' >Signup</Link></p>
+      <p className="text-center text-gray-600">
+        Don't have an account?{" "}
+        <Link
+          href={"/signup"}
+          className="underline text-[cadetblue] font-medium hover:underline-offset-2"
+        >
+          Signup
+        </Link>
+      </p>
     </form>
   );
 }

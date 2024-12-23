@@ -12,6 +12,7 @@ import SectionHeadingAndTips from "@/components/SectionHeadingAndTips";
 import {  FaFileAlt } from "react-icons/fa";
 import { Textarea } from "@/components/ui/textarea";
 import BtnLoader from "@/components/BtnLoader";
+import { ArrowRight } from "lucide-react";
 
 function Page() {
   const {
@@ -76,7 +77,7 @@ function Page() {
                 size="xl"
                 variant={"cadetblue"}
               >
-                Next: Education {loading && <BtnLoader /> }
+                Next: Education {loading ? <BtnLoader /> : <ArrowRight className="w-5 h-5" /> }
               </Button>
             </div>
           </form>

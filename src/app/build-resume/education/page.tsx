@@ -11,6 +11,7 @@ import SectionHeadingAndTips from "@/components/SectionHeadingAndTips";
 import { FaGraduationCap } from "react-icons/fa";
 import BtnLoader from "@/components/BtnLoader";
 import DontIncludeCheck from "@/components/DontIncludeCheck";
+import { ArrowRight } from "lucide-react";
 
 interface EducationI {
   id?: number;
@@ -141,7 +142,7 @@ function Page() {
                 size="xl"
                 variant={"cadetblue"}
               >
-                Next: Work Experience {loading && <BtnLoader />}
+                Next: Work Experience  {loading ? <BtnLoader /> : <ArrowRight className="w-5 h-5" /> }
               </Button>
             </div>
           </form>

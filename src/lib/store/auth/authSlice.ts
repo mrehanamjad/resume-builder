@@ -1,8 +1,15 @@
+import { userDataI } from "@/lib/types";
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState:{status:boolean;userData:any} = {
-    status: true,
-    userData:  {name: 'Rehan Amjad', email: 'rehan@mail.com'},
+
+interface initialStateI {
+    status: boolean;
+    userData: userDataI | null;
+}
+
+const initialState:initialStateI = {
+    status: false,
+    userData: null,
 }
 
 const authSlice = createSlice({

@@ -7,14 +7,13 @@ import {
   X, 
   User, 
   LogOut, 
-  Settings, 
   FileText,
   Plus,
 } from 'lucide-react';
 import { useAppSelector } from '@/lib/store/hooks';
+import LogoutBtn from './LogoutBtn';
 
 const Header = ({ 
-  userEmail = 'rehan@gmail.com', 
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -30,10 +29,6 @@ const Header = ({
     setIsProfileOpen(!isProfileOpen);
   };
 
-  const handleLogout = () => {
-    // Add your logout logic here
-    console.log('Logging out...');
-  };
 
 
 
@@ -98,16 +93,10 @@ const Header = ({
                 {isProfileOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 border border-gray-100">
                     <div className="flex flex-col items- px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      <span className='text-[cadetblue] font-semibold'>{userData.name}</span>
-                      <span className='text-gray-500'>{userData.email}</span>
+                      <span className='text-[cadetblue] font-semibold'>{userData?.name}</span>
+                      <span className='text-gray-500'>{userData?.email}</span>
                     </div>
-                    <button
-                      onClick={handleLogout}
-                      className="flex items-center w- px-4 py-2 text-sm text-red-500 w-fit hover:bg-gray-100"
-                    >
-                      <LogOut className="h-4 w-4 mr-2" />
-                      Logout
-                    </button>
+                   <LogoutBtn />
                   </div>
                 )}
               </div>
@@ -149,16 +138,10 @@ const Header = ({
                 ))}
                 <div className="  bg-white rounded-md shadow-lg py-1 border border-gray-100">
                     <div className="flex flex-col items- px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      <span className='text-[cadetblue] font-semibold'>{userData.name}</span>
-                      <span className='text-gray-500'>{userData.email}</span>
+                      <span className='text-[cadetblue] font-semibold'>{userData?.name}</span>
+                      <span className='text-gray-500'>{userData?.email}</span>
                     </div>
-                    <button
-                      onClick={handleLogout}
-                      className="flex items-center w- px-4 py-2 text-sm text-red-500 w-fit hover:bg-gray-100"
-                    >
-                      <LogOut className="h-4 w-4 mr-2" />
-                      Logout
-                    </button>
+                   <LogoutBtn />
                   </div>
               </>
             ) : (

@@ -2,6 +2,7 @@
 
   
 export interface EducationI {
+    id?: number;
     qualification: string;
     institutionName: string;
     educationStartAndEndDate: string;
@@ -9,6 +10,7 @@ export interface EducationI {
   }
   
 export  interface WorkExperienceI {
+    id?: number;
     jobTitle: string;
     companyName: string;
     jobStartAndEndDate: string;
@@ -16,11 +18,13 @@ export  interface WorkExperienceI {
   }
   
 export  interface SkillI {
+    id?: number;
     skillName: string;
     skillLevel: string;
   }
   
 export  interface CourseI {
+    id?: number;
     courseTitle: string;
     courseInstitutionName: string;
     courseStartAndEndDate: string;
@@ -28,6 +32,7 @@ export  interface CourseI {
   }
   
 export  interface ProjectI {
+    id?: number;
     projectTitle: string;
     technologyUsed: string;
     projectGithubLink: string;
@@ -69,4 +74,30 @@ export interface PersonalInfoI {
     linkedin: string;
     personalWebsite: string;
     github: string;
+}
+
+
+
+
+export interface userDataI {
+    "$id":string;
+    "$createdAt":string;
+    "$updatedAt":string;
+    "name":string;
+    "registration":string;
+    "status": boolean;
+    "labels": string[]
+    "passwordUpdate":string;
+    "email":string;
+    "phone":string;
+    "emailVerification": boolean;
+    "phoneVerification": boolean;
+    "mfa": boolean;
+    "prefs": any;
+    "targets": [
+        {
+          [key: string]: any;
+        }
+    ],
+    "accessedAt": string;
 }

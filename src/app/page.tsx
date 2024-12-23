@@ -2,7 +2,6 @@ import React from 'react';
 import { ArrowRight, FileText, Zap, Shield, Star, CheckCircle, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from "next/link";
-// import { Card, CardContent } from '@/components/ui/card';
 
 
 export default function Home() {
@@ -48,6 +47,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       {/* Hero Section */}
+      
       <div className="relative pt-16 pb-32 overflow-hidden">
         <div className="mt-16 mx-auto max-w-7xl px-4 sm:mt-24 sm:px-6">
           <div className="text-center">

@@ -1,17 +1,21 @@
-'use client'
-import React from 'react';
-import { Lock, Mail, User } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import Link from 'next/link';
+"use client";
+import React, { useState } from "react";
+import { Lock, Mail, User } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import Link from "next/link";
+import authService from "@/appwrite/auth";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { login as storeLogin } from "@/lib/store/auth/authSlice";
+import { useRouter } from "next/navigation";
 
 type SignupFormValues = {
-  fullName: string;
+  name: string;
   email: string;
   password: string;
   confirmPassword: string;
-//   terms: boolean; TODO: add soon
+  //   terms: boolean; TODO: add soon
 };
 
 export default function SignupPage() {
@@ -22,18 +26,45 @@ export default function SignupPage() {
     formState: { errors, isSubmitting },
   } = useForm<SignupFormValues>();
 
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const [error, setError] = useState("");
+
   const password = watch("password");
 
   const onSubmit = async (data: SignupFormValues) => {
-    // Handle signup logic here
-    console.log(data);
+    setError("");
+    try {
+      const accountCreated = await authService.createAccount(data);
+      if (accountCreated) {
+        const session = await authService.login(data);
+        if (session) {
+          const currentUser = await authService.getCurrentUser();
+          if (currentUser) {
+            dispatch(storeLogin({ currentUser }));
+            router.push("/my-resumes");
+          }
+        }
+      }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred.");
+      }
+    }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      {error && <p className="text-red-500 ">{error}</p>}
       {/* Full Name Input */}
       <div className="space-y-2">
-        <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
+        <label
+          htmlFor="fullName"
+          className="block text-sm font-medium text-gray-700"
+        >
           Full Name
         </label>
         <div className="relative">
@@ -41,26 +72,31 @@ export default function SignupPage() {
             <User className="h-5 w-5 text-gray-400" />
           </div>
           <Input
-            {...register("fullName", {
+            {...register("name", {
               required: "Full name is required",
               minLength: {
                 value: 2,
-                message: "Name must be at least 2 characters"
-              }
+                message: "Name must be at least 2 characters",
+              },
             })}
             type="text"
-            className={ ` pl-10 ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
+            className={` pl-10 ${
+              errors.password ? "border-red-500" : "border-gray-300"
+            }`}
             placeholder="Enter your full name"
           />
         </div>
-        {errors.fullName && (
-          <p className="mt-1 text-sm text-red-600">{errors.fullName.message}</p>
+        {errors.name && (
+          <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
         )}
       </div>
 
       {/* Email Input */}
       <div className="space-y-2">
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium text-gray-700"
+        >
           Email address
         </label>
         <div className="relative">
@@ -72,11 +108,13 @@ export default function SignupPage() {
               required: "Email is required",
               pattern: {
                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: "Invalid email address"
-              }
+                message: "Invalid email address",
+              },
             })}
             type="email"
-            className={ ` pl-10 ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
+            className={` pl-10 ${
+              errors.password ? "border-red-500" : "border-gray-300"
+            }`}
             placeholder="Enter your email"
           />
         </div>
@@ -87,7 +125,10 @@ export default function SignupPage() {
 
       {/* Password Input */}
       <div className="space-y-2">
-        <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+        <label
+          htmlFor="password"
+          className="block text-sm font-medium text-gray-700"
+        >
           Password
         </label>
         <div className="relative">
@@ -99,15 +140,19 @@ export default function SignupPage() {
               required: "Password is required",
               minLength: {
                 value: 8,
-                message: "Password must be at least 8 characters"
+                message: "Password must be at least 8 characters",
               },
               pattern: {
-                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-                message: "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character"
-              }
+                value:
+                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                message:
+                  "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character",
+              },
             })}
             type="password"
-            className={ ` pl-10 ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
+            className={` pl-10 ${
+              errors.password ? "border-red-500" : "border-gray-300"
+            }`}
             placeholder="Create a password"
           />
         </div>
@@ -118,7 +163,10 @@ export default function SignupPage() {
 
       {/* Confirm Password Input */}
       <div className="space-y-2">
-        <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+        <label
+          htmlFor="confirmPassword"
+          className="block text-sm font-medium text-gray-700"
+        >
           Confirm Password
         </label>
         <div className="relative">
@@ -128,19 +176,24 @@ export default function SignupPage() {
           <Input
             {...register("confirmPassword", {
               required: "Please confirm your password",
-              validate: value => value === password || "Passwords do not match"
+              validate: (value) =>
+                value === password || "Passwords do not match",
             })}
             type="password"
-            className={ ` pl-10 ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
+            className={` pl-10 ${
+              errors.password ? "border-red-500" : "border-gray-300"
+            }`}
             placeholder="Confirm your password"
           />
         </div>
         {errors.confirmPassword && (
-          <p className="mt-1 text-sm text-red-600">{errors.confirmPassword.message}</p>
+          <p className="mt-1 text-sm text-red-600">
+            {errors.confirmPassword.message}
+          </p>
         )}
       </div>
 
-        {/* TODO: add  soon  */}
+      {/* TODO: add  soon  */}
       {/* Terms and Conditions */}
       {/* <div className="space-y-2">
         <div className="flex items-start">
@@ -171,14 +224,13 @@ export default function SignupPage() {
       <Button
         type="submit"
         disabled={isSubmitting}
-        variant={'cadetblue'}
+        variant={"cadetblue"}
         className="bg-[#58a0a1] w-full py-6 text-lg"
-        >
-        {isSubmitting ? 'Creating account...' : 'Create account'}
+      >
+        {isSubmitting ? "Creating account..." : "Create account"}
       </Button>
 
-
-        {/* TODO: add feature soon  */}
+      {/* TODO: add feature soon  */}
       {/* Social Signup Options */}
       {/* <div className="mt-6">
         <div className="relative">
@@ -211,8 +263,15 @@ export default function SignupPage() {
           </button>
         </div>
       </div> */}
-          <p className='text-center text-gray-600'>Already have an account? <Link href={'/login'} className='underline text-[cadetblue] font-medium hover:underline-offset-2' >Login</Link></p>
-
+      <p className="text-center text-gray-600">
+        Already have an account?{" "}
+        <Link
+          href={"/login"}
+          className="underline text-[cadetblue] font-medium hover:underline-offset-2"
+        >
+          Login
+        </Link>
+      </p>
     </form>
   );
 }

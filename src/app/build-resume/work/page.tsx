@@ -11,6 +11,7 @@ import SectionHeadingAndTips from "@/components/SectionHeadingAndTips";
 import { FaBriefcase } from "react-icons/fa";
 import BtnLoader from "@/components/BtnLoader";
 import DontIncludeCheck from "@/components/DontIncludeCheck";
+import { ArrowRight } from "lucide-react";
 
 interface WorkExperienceI {
   id?: number;
@@ -136,7 +137,7 @@ function Page() {
                 size="xl"
                 variant={"cadetblue"}
               >
-                Next: Skills {loading && <BtnLoader /> }
+                Next: Skills {loading ? <BtnLoader /> : <ArrowRight className="w-5 h-5" /> }
               </Button>
             </div>
           </form>

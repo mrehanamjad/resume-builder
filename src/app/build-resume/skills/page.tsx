@@ -10,6 +10,7 @@ import SectionHeadingAndTips from "@/components/SectionHeadingAndTips";
 import { FaLightbulb } from "react-icons/fa";
 import SkillCard from "@/components/SkillCard";
 import BtnLoader from "@/components/BtnLoader";
+import { ArrowRight } from "lucide-react";
 
 interface SkillI {
   id?: number;
@@ -99,7 +100,7 @@ function Page() {
                 size="xl"
                 variant={"cadetblue"}
               >
-                Next: Courses & Certifications {loading && <BtnLoader /> }
+                Next: Courses & Certifications {loading ? <BtnLoader /> : <ArrowRight className="w-5 h-5" /> }
               </Button>
             </div>
           </form>
