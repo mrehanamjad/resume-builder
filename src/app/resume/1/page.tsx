@@ -8,10 +8,10 @@ import Image from 'next/image';
 
 const Resume = () => {
 
-  const resumeData = useAppSelector(state => state.resume.resumeData)
+  const resumeData = useAppSelector(state => state.resume)
 
   return (
-    <div className='w-full py-6 px-2 md:py-12 bg-[cadetblue]'>
+    <div className='w-full   '>
       <Container>
     <div className="w-full max-w-5xl mx-auto   min-h-screen bg-white text-gray-800">
       <div className="flex gap-2 sm:gap-4 lg:gap-8 p-2 sm:p-4 lg:p-8">
@@ -20,10 +20,10 @@ const Resume = () => {
           {/* Profile Section */}
           <div className="text-center">
             <div className="w-16 h-16 sm:w-24 sm:h-24 lg:w-32 lg:h-32 mx-auto bg-gray-200 rounded-full mb-2 lg:mb-4">
-            <Image src={resumeData.personalInfo.image as string || '/image.png'} alt='profile image' height={1000} width={1000} className='h-full w-full' />
+            <Image src={resumeData.image as string || '/image.png'} alt='profile image' height={1000} width={1000} className='h-full w-full' />
             </div>
-            <h1 className="text-base sm:text-xl lg:text-2xl font-bold">{resumeData.personalInfo.firstName + ' ' + resumeData.personalInfo.lastName}</h1>
-            <p className="text-sm sm:text-base lg:text-lg text-gray-600">{resumeData.personalInfo.jobTitleApplyFor}</p>
+            <h1 className="text-base sm:text-xl lg:text-2xl font-bold">{resumeData.firstName + ' ' + resumeData.lastName}</h1>
+            <p className="text-sm sm:text-base lg:text-lg text-gray-600">{resumeData.jobTitleApplyFor}</p>
           </div>
 
           {/* Contact Information */}
@@ -32,28 +32,28 @@ const Resume = () => {
             <div className="space-y-1 sm:space-y-2">
               <div className="flex items-center gap-1 sm:gap-2">
                 <Mail size={12} className="sm:w-4 lg:w-5 sm:h-4 lg:h-5" />
-                <span className="text-xs sm:text-sm lg:text-base">{resumeData.personalInfo.email}</span>
+                <span className="text-xs sm:text-sm lg:text-base">{resumeData.email}</span>
               </div>
               <div className="flex items-center gap-1 sm:gap-2">
                 <Phone size={12} className="sm:w-4 lg:w-5 sm:h-4 lg:h-5" />
-                <span className="text-xs sm:text-sm lg:text-base">{resumeData.personalInfo.phone}</span>
+                <span className="text-xs sm:text-sm lg:text-base">{resumeData.phone}</span>
               </div>
               <div className="flex items-center gap-1 sm:gap-2">
                 <MapPin size={12} className="sm:w-4 lg:w-5 sm:h-4 lg:h-5" />
-                <span className="text-xs sm:text-sm lg:text-base">{resumeData.personalInfo.address}</span>
+                <span className="text-xs sm:text-sm lg:text-base">{resumeData.address}</span>
               </div>
-              {resumeData.personalInfo.github && <div className="flex items-center gap-1 sm:gap-2">
+              {resumeData.github && <div className="flex items-center gap-1 sm:gap-2">
                 <Github size={12} className="sm:w-4 lg:w-5 sm:h-4 lg:h-5" />
-                <span className="text-xs sm:text-sm lg:text-base">{resumeData.personalInfo.github}</span>
+                <span className="text-xs sm:text-sm lg:text-base">{resumeData.github}</span>
               </div>}
-              {resumeData.personalInfo.linkedin && <div className="flex items-center gap-1 sm:gap-2">
+              {resumeData.linkedin && <div className="flex items-center gap-1 sm:gap-2">
                 <Linkedin size={12} className="sm:w-4 lg:w-5 sm:h-4 lg:h-5" />
-                <span className="text-xs sm:text-sm lg:text-base">{resumeData.personalInfo.linkedin}</span>
+                <span className="text-xs sm:text-sm lg:text-base">{resumeData.linkedin}</span>
               </div>}
-              {resumeData.personalInfo.personalWebsite && <div className="flex items-center gap-1 sm:gap-2">
+              {resumeData.personalWebsite && <div className="flex items-center gap-1 sm:gap-2">
                 {/* <Linkedin size={12} className="sm:w-4 lg:w-5 sm:h-4 lg:h-5" /> */}
                 <Globe size={12} className="sm:w-4 lg:w-5 sm:h-4 lg:h-5" />
-                <span className="text-xs sm:text-sm lg:text-base">{resumeData.personalInfo.personalWebsite}</span>
+                <span className="text-xs sm:text-sm lg:text-base">{resumeData.personalWebsite}</span>
               </div>}
             </div>
           </div>
@@ -103,7 +103,7 @@ const Resume = () => {
          {resumeData.workExperience.length > 0 && (<div>
             <h2 className="text-sm sm:text-base lg:text-lg font-semibold border-b border-gray-200 pb-1 lg:pb-2">Experience</h2>
             <div className="mt-2 lg:mt-4 space-y-3 sm:space-y-4 lg:space-y-6">
-            {resumeData.workExperience.map(work => ( <div  key={work.id} >
+            {resumeData.workExperience.map(work => ( <div  key={work.jobTitle} >
                 <div className="flex justify-between items-baseline">
                   <h3 className="text-xs sm:text-sm lg:text-base font-medium">{work.jobTitle} - {work.companyName}</h3>
                   <span className="text-xs sm:text-sm text-gray-500">{work.jobStartAndEndDate}</span>
@@ -121,7 +121,7 @@ const Resume = () => {
             <div className="mt-2 lg:mt-4 flex flex-wrap gap-1 sm:gap-2">
               {resumeData.skills?.map((skill) => (
                 <span 
-                  key={skill.id}
+                  key={skill.skillName}
                   className="px-2 sm:px-3 py-0.5 sm:py-1 bg-gray-100 text-gray-700 rounded-full text-xs sm:text-sm"
                 >
                   {skill.skillName}

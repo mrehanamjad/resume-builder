@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-    status: false,
-    userData:  null,
+const initialState:{status:boolean;userData:any} = {
+    status: true,
+    userData:  {name: 'Rehan Amjad', email: 'rehan@mail.com'},
 }
 
 const authSlice = createSlice({

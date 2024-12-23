@@ -1,10 +1,6 @@
-// in this we do both in same file but remember:
-// the best practice industry standard is to keep storage service in seperate file so that it become reuseable 
-
-// many similaries asauth.js
-
 import conf from "@/cof/conf";
 import { Client, ID, Databases, Storage, Query, Account } from "appwrite";
+import { ResumeDataI } from "@/lib/types";
 
 export class Services {
     client = new Client()
@@ -13,46 +9,48 @@ export class Services {
 
     constructor() {
         this.client
-            .setEndpoint(conf.appwriteUrl)
-            .setProject(conf.appwriteProjectId)
+            .setEndpoint("https://cloud.appwrite.io/v1")
+            .setProject("675d2cba00178c3f11fb")
         this.databases = new Databases(this.client)
         this.bucket = new Storage(this.client)
     }
 
-    async createPost({ title, slug, content,category, featuredImage, status,updatedOn, userId,author }: {
-        title: string;
-        slug: string;
-        content: string;
-        category: string;
-        featuredImage: string;
-        status: string;
-        updatedOn: string;
-        userId: string;
-        author: string;
-    }) { // in featuredImae we pass image_file_id
+
+    async createResume({ 
+        resumeId, userId, firstName, lastName, email,phone, address, image, jobTitleApplyFor, linkedin, personalWebsite, github, aboutMe,education,workExperience,skills,courses,projects
+     }: ResumeDataI) { 
         try {
             return await this.databases.createDocument(
                 conf.appwriteDatabaseId,
-                conf.appwriteCollectionId,
-                slug, //we used slug for document_id
+                conf.appwriteMainCollectionId,
+                resumeId, 
                 {
-                    title,
-                    content,
-                    category,
-                    featuredImage,
-                    status,
-                    updatedOn,
                     userId,
-                    author,
+                    firstName,
+                    lastName,
+                    email,
+                    phone,
+                    address,
+                    image,
+                    jobTitleApplyFor,
+                    linkedin,
+                    personalWebsite,
+                    github,
+                    aboutMe,
+                    education,
+                    workExperience,
+                    skills,
+                    projects,
+                    courses,
                 }
             )
         } catch (error) {
-            console.log("Appwrite Service :: createPost :: error", error);
+            console.log("Appwrite Service :: createResume :: error", error);
         }
     }
 
-    async updatePost(
-        slug:string, // post id 
+    async updateResume(
+        slug:string, // Resume id 
         { title, content,category, featuredImage, status,updatedOn }: {
             title: string;
             content: string;
@@ -65,7 +63,7 @@ export class Services {
         try {
             return await this.databases.updateDocument(
                 conf.appwriteDatabaseId,
-                conf.appwriteCollectionId,
+                conf.appwriteMainCollectionId,
                 slug,
                 {
                     title,
@@ -78,34 +76,34 @@ export class Services {
 
             )
         } catch (error) {
-            console.log("Appwrite service :: updatePost :: error", error);
+            console.log("Appwrite service :: updateResume :: error", error);
         }
     }
 
-    async deletePost(slug:string) {
+    async deleteResume(slug:string) {
         try {
-            await this.databases.deleteDocument(conf.appwriteDatabaseId, conf.appwriteCollectionId, slug)
+            await this.databases.deleteDocument(conf.appwriteDatabaseId, conf.appwriteMainCollectionId, slug)
 
             return true
         } catch (error) {
-            console.log("Appwrite :: deletePost :: error", error);
+            console.log("Appwrite :: deleteResume :: error", error);
 
             return false
         }
     }
 
-    //one post
-    async getPost(slug:string) {
+    //one Resume
+    async getResume(slug:string) {
         try {
-           return await this.databases.getDocument(conf.appwriteDatabaseId, conf.appwriteCollectionId, slug) // slug as document_id
+           return await this.databases.getDocument(conf.appwriteDatabaseId, conf.appwriteMainCollectionId, slug) // slug as document_id
         } catch (error) {
-            console.log("Appwrite :: getPost :: error", error);
+            console.log("Appwrite :: getResume :: error", error);
             return false
         }
     }
 
-    // all posts
-    async getPosts(queres = [Query.equal("status", "active")]) {
+    // all Resumes
+    async getResumes(queres = [Query.equal("status", "active")]) {
         // here in above parameter: queries are jus variable the main thing is [Query.equal("status","active")]
         // in [Query.equal("status","active")], status is keythat me created in appwrite website -> databases -> blog -> Articles -> indexes
         // we can also add more in quesries -> read docs
@@ -114,13 +112,13 @@ export class Services {
         try { 
             return await this.databases.listDocuments( //returns array
                 conf.appwriteDatabaseId,
-                conf.appwriteCollectionId,
+                conf.appwriteMainCollectionId,
                 queres, // we can also define quries here instude of defining in above parameter -> read docs
 
                 // here we can also add paginations --> read docs
             )
         } catch (error) {
-            console.log("Appwrite :: getPosts :: error", error);
+            console.log("Appwrite :: getResumes :: error", error);
             return false
         }
     }
